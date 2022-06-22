@@ -2,20 +2,24 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { Metaplex } from "@metaplex-foundation/js-next";
 import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 
-const connection = new Connection(clusterApiUrl("devnet"));
+const connection = new Connection(clusterApiUrl("mainnet-beta"));
 const mx = Metaplex.make(connection);
 
 export default function Home() {
   const [address, setAddress] = useState(
-    "3ijFZcJKmp1EnDbbuaumWYvEFbztx9NRupwTXTchK9bP"
+    "2WnywKj4kyCKxuFRaoikxy8ixE7tUKn5Ba3v7nArDUP9"
   );
   const [nft, setNft] = useState(null);
   const fetchNft = async () => {
     const nft = await mx.nfts().findNftByMint(new PublicKey(address));
+    console.log(JSON.stringify(nft, null, 2));
+
     setNft(nft);
   };
+
+  useEffect(() => {fetchNft()}, [address])
 
   return (
     <div>
